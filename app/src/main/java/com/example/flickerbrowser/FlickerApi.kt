@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface FlickerApi {
 
-    @GET("/")
+    @GET("services/feeds/photos_public.gne")
     suspend fun getImages(
         @Query("format") format: String,
         @Query("nojsoncallback") nojsoncallback: String

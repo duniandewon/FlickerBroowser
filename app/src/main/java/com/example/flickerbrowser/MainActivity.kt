@@ -21,19 +21,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lifecycleScope.launch {
-            val response = try {
-                Api.api.getImages("json", "1")
-            } catch (e: HttpException) {
-                Log.d(TAG, "HttpException: Unexpected request")
-                return@launch
-            } catch (e: IOException) {
-                Log.d(TAG, "IOException: No internet probably")
-                return@launch
-            }
+        binding.button.setOnClickListener() {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val response = try {
+                    Api.api.getImages("json", "1")
+                } catch (e: HttpException) {
+                    Log.d(TAG, "HttpException: Unexpected request")
+                    return@launch
+                } catch (e: IOException) {
+                    Log.d(TAG, "IOException: $e")
+                    return@launch
+                }
 
-            if (response.isSuccessful && response.body() != null) {
-                Log.d(TAG, "Response: ${response.body()}")
+                if (response.isSuccessful && response.body() != null)
+                    Log.d(TAG, "Response: $response")
             }
         }
     }
